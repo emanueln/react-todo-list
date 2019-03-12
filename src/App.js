@@ -1,13 +1,25 @@
 import React, { Component } from 'react';
 import Todos from './components/Todos';
+import AddTodo from './components/AddTodo';
 import Header from './components/layout/Header'
 import './App.css';
+import uuid from 'uuid'
 
 class App extends Component {
   
   // Delete Todo
   delTodo = (id) => {
     this.setState( { todos: [...this.state.todos.filter(todo => todo.id !== id)] });
+  }
+  
+  // Add Todo
+  addTodo = (title) => {
+    const newTodo = {
+      title,
+      id: uuid.v4(),
+      completed: false
+    }
+    this.setState({ todos: [...this.state.todos, newTodo]})
   }
 
   // Mark Todo Completed
@@ -24,17 +36,17 @@ class App extends Component {
     todos: [
       {
         title: "Take out the trash",
-        id : 1,
+        id : uuid.v4(),
         completed: false
       },
       {
         title: "Buy groceries",
-        id : 2,
+        id : uuid.v4(),
         completed: false
       },
       {
         title: "Clean up after Charlie",
-        id : 3,
+        id : uuid.v4(),
         completed: false
       }
     ]
@@ -42,8 +54,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header/>
-        <Todos todos={this.state.todos} delTodo={this.delTodo} markComplete={this.markComplete}/>
+        <div className="container">
+          <Header />
+          <AddTodo addTodo={this.addTodo}/>
+          <Todos todos={this.state.todos} delTodo={this.delTodo} markComplete={this.markComplete}/>
+        </div> 
       </div>
     );
   }
